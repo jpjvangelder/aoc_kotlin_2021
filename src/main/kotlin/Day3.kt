@@ -14,8 +14,8 @@ class Day3 {
             var zeroBits = 0;
             var oneBits = 0;
 
-            input.forEach { bytes ->
-                when (bytes[i]) {
+            input.forEach {
+                when (it[i]) {
                     zeroByte -> zeroBits++
                     oneByte -> oneBits++
                 }

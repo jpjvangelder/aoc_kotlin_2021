@@ -10,32 +10,33 @@ class Day2 {
             PositionUnits(split[0], split[1].toInt())
         }.toList()
     }
-    private var horizontalPosition = 0
-    private var depth = 0
-    private var aim = 0
-    private fun resetValues() = run { horizontalPosition = 0; depth = 0; aim = 0; }
 
     private fun part1() {
-        resetValues()
-        input.forEach { positionUnits ->
-            when (positionUnits.position) {
-                "up" -> depth -= positionUnits.units
-                "down" -> depth += positionUnits.units
-                "forward" -> horizontalPosition += positionUnits.units
+        var horizontalPosition = 0
+        var depth = 0
+
+        input.forEach {
+            when (it.position) {
+                "up" -> depth -= it.units
+                "down" -> depth += it.units
+                "forward" -> horizontalPosition += it.units
             }
         }
         println(horizontalPosition * depth)
     }
 
     private fun part2() {
-        resetValues()
-        input.forEach { positionUnits ->
-            when (positionUnits.position) {
-                "up" -> aim -= positionUnits.units
-                "down" -> aim += positionUnits.units
+         var horizontalPosition = 0
+         var depth = 0
+         var aim = 0
+
+        input.forEach {
+            when (it.position) {
+                "up" -> aim -= it.units
+                "down" -> aim += it.units
                 "forward" -> {
-                    horizontalPosition += positionUnits.units
-                    depth += aim * positionUnits.units
+                    horizontalPosition += it.units
+                    depth += aim * it.units
                 }
             }
         }
