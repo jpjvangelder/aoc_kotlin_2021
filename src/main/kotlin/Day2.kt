@@ -3,7 +3,7 @@ import java.io.File
 class Day2 {
     private data class PositionUnits(val position: String, val units: Int)
 
-    private val input = File("src/main/resources/input_day2.txt").useLines {
+    private val input: List<PositionUnits> = File("src/main/resources/input_day2.txt").useLines {
         it.map { string ->
             string.split(Regex("\\s(?=([^\"]*\"[^\"]*\")*[^\"]*$)"))
         }.map { split ->
