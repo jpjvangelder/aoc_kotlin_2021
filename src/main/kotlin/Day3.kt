@@ -1,91 +1,59 @@
 import java.io.File
 
-class Day3 {
-    private val input: List<ByteArray> = File("src/main/resources/input_day3.txt").useLines {
-        it.map(String::toByteArray).toList()
-    }
-    private val zeroByte: Byte = 48
-    private val oneByte: Byte = 49
-    private var gammaRate = StringBuilder()
-    private var epsilonRate = StringBuilder()
+class Day3 : Day {
+    private enum class Mode { MOST_COMMON, LEAST_COMMON }
 
-    private fun part1() {
-        for (i in 0 until input[0].size) {
-            var zeroBits = 0;
-            var oneBits = 0;
+    private val input: List<String> = File("src/main/resources/input_day3.txt").useLines { it.toList() }
 
-            input.forEach {
-                when (it[i]) {
-                    zeroByte -> zeroBits++
-                    oneByte -> oneBits++
-                }
-            }
-
+    override fun part1() {
+        val gammaRate = StringBuilder()
+        val epsilonRate = StringBuilder()
+        (0 until input[0].length).forEach { column ->
             when {
-                zeroBits > oneBits -> {
-                    gammaRate.append(0)
-                    epsilonRate.append(1)
-                }
-                zeroBits < oneBits -> {
+                input.count { it[column] == '1' } > input.size / 2 -> {
                     gammaRate.append(1)
                     epsilonRate.append(0)
+                }
+                else -> {
+                    gammaRate.append(0)
+                    epsilonRate.append(1)
                 }
             }
         }
         println("$gammaRate".toInt(2) * "$epsilonRate".toInt(2))
     }
 
-    private fun part2() {
-        val oxygen = input.toMutableList()
-        val co2 = input.toMutableList();
 
-        for (i in 0 until input[0].size) {
-            var oxygenZeroBits = 0;
-            var oxygenOneBits = 0;
-            var co2ZeroBits = 0;
-            var co2OneBits = 0;
+    override fun part2() {
+        val oxygen = filterLines(input.toMutableList(), Mode.MOST_COMMON)
+        val co2 = filterLines(input.toMutableList(), Mode.LEAST_COMMON)
 
-            oxygen.forEach {
-                when (it[i]) {
-                    zeroByte -> oxygenZeroBits++
-                    oneByte -> oxygenOneBits++
-                }
+        println(oxygen.toInt(2) * co2.toInt(2))
+    }
+
+    private fun filterLines(list: List<String>, commonMode: Mode): String {
+        var filtered = list.toList()
+        (0 until list[0].length).forEach {
+            filtered = findCommonValue(filtered, it, commonMode)
+            if (filtered.size <= 1) return filtered[0]
+        }
+        return "0"
+    }
+
+    private fun findCommonValue(input: List<String>, column: Int, commonMode: Mode): List<String> {
+        val ones = input.count { it[column] == '1' }
+        val commonValue = when (commonMode) {
+            Mode.MOST_COMMON -> {
+                if (ones >= input.size / 2.0) '1'
+                else '0'
             }
-
-            co2.forEach {
-                when (it[i]) {
-                    zeroByte -> co2ZeroBits++
-                    oneByte -> co2OneBits++
-                }
-            }
-
-            when {
-                oxygenOneBits >= oxygenZeroBits && oxygen.size > 1 -> oxygen.retainAll { bytes -> bytes[i] == oneByte }
-                oxygenZeroBits > oxygenOneBits && oxygen.size > 1 -> oxygen.retainAll { bytes -> bytes[i] == zeroByte }
-            }
-            when {
-                co2OneBits >= co2ZeroBits && co2.size > 1 -> co2.retainAll { bytes -> bytes[i] == zeroByte }
-                co2ZeroBits > co2OneBits && co2.size > 1 -> co2.retainAll { bytes -> bytes[i] == oneByte }
-            }
-
-            if (oxygen.size == 1 && co2.size == 1) {
-                val oxygenString = StringBuilder()
-                val co2String = StringBuilder()
-                oxygen[0].forEach {
-                    when (it) {
-                        zeroByte -> oxygenString.append(0)
-                        oneByte -> oxygenString.append(1)
-                    }
-                }
-                co2[0].forEach {
-                    when (it) {
-                        zeroByte -> co2String.append(0)
-                        oneByte -> co2String.append(1)
-                    }
-                }
-                println("$oxygenString".toInt(2) * "$co2String".toInt(2))
+            Mode.LEAST_COMMON -> {
+                if (ones >= input.size / 2.0) '0'
+                else '1'
             }
         }
+
+        return input.filter { it[column] == commonValue }
     }
 
     init {

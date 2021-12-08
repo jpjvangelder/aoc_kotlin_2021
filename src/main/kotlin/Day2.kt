@@ -1,6 +1,6 @@
 import java.io.File
 
-class Day2 {
+class Day2: Day {
     private data class PositionUnits(val position: String, val units: Int)
 
     private val input: List<PositionUnits> = File("src/main/resources/input_day2.txt").useLines {
@@ -11,7 +11,7 @@ class Day2 {
         }.toList()
     }
 
-    private fun part1() {
+    override fun part1() {
         var horizontalPosition = 0
         var depth = 0
 
@@ -25,7 +25,7 @@ class Day2 {
         println(horizontalPosition * depth)
     }
 
-    private fun part2() {
+    override fun part2() {
          var horizontalPosition = 0
          var depth = 0
          var aim = 0
