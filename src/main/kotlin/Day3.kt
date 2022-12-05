@@ -1,9 +1,14 @@
-import java.io.File
-
 class Day3 : Day {
     private enum class Mode { MOST_COMMON, LEAST_COMMON }
+    private val input: List<String> = AocUtil.getFile("input_day3")
 
-    private val input: List<String> = File("src/main/resources/input_day3.txt").useLines { it.toList() }
+    init {
+        println("Day 3 output:")
+        part1()
+        part2()
+        println("----------")
+    }
+
 
     override fun part1() {
         val gammaRate = StringBuilder()
@@ -22,7 +27,6 @@ class Day3 : Day {
         }
         println("$gammaRate".toInt(2) * "$epsilonRate".toInt(2))
     }
-
 
     override fun part2() {
         val oxygen = filterLines(input.toMutableList(), Mode.MOST_COMMON)
@@ -54,12 +58,5 @@ class Day3 : Day {
         }
 
         return input.filter { it[column] == commonValue }
-    }
-
-    init {
-        println("Day 3 output:")
-        part1()
-        part2()
-        println("----------")
     }
 }

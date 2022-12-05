@@ -1,9 +1,14 @@
-import java.io.File
-
 class Day4 : Day {
-    private val input: List<String> = File("src/main/resources/input_day4.txt").useLines { it.filter(String::isNotEmpty).toList() }
+    private val input: List<String> = AocUtil.getFile("input_day4").filter(String::isNotEmpty)
     private val numbers: List<Int> = input.toList()[0].split(",").map(String::toInt)
     private val bingoCards: List<BingoCard> = getBingoCards();
+
+    init {
+        println("Day 4 output:")
+        part1()
+        part2()
+        println("----------")
+    }
 
     override fun part1() {
         numbers.forEach { number ->
@@ -33,13 +38,6 @@ class Day4 : Day {
                 }
             }
         }
-    }
-
-    init {
-        println("Day 4 output:")
-        part1()
-        part2()
-        println("----------")
     }
 
     private data class BingoNumber(var number: Int, var flagged: Boolean)
