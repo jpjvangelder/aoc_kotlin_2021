@@ -15,7 +15,7 @@ class Day4 : Day {
             bingoCards.forEach { bingoCard ->
                 bingoCard.flagValue(number)
                 if (bingoCard.hasWon) {
-                    println(number * bingoCard.sumOfUmarkedValues)
+                    println(number * bingoCard.sumOfUnmarkedValues)
                     return
                 }
             }
@@ -32,7 +32,7 @@ class Day4 : Day {
                     winningBoards.add(bingoCard)
                     finalNumber = number
                     if(winningBoards.size == bingoCards.size) {
-                        println(winningBoards.last().sumOfUmarkedValues * finalNumber)
+                        println(winningBoards.last().sumOfUnmarkedValues * finalNumber)
                         return
                     }
                 }
@@ -43,7 +43,7 @@ class Day4 : Day {
     private data class BingoNumber(var number: Int, var flagged: Boolean)
 
     private data class BingoCard(var rows: MutableList<List<BingoNumber>>) {
-        val sumOfUmarkedValues: Int
+        val sumOfUnmarkedValues: Int
             get() {
                 var sum = 0
                 rows.forEach { it.forEach { bingoNumber -> if (!bingoNumber.flagged) sum += bingoNumber.number } }
