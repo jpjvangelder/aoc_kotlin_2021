@@ -1,7 +1,7 @@
 class Day4 : Day {
     private val input: List<String> = AocUtil.getFile("input_day4").filter(String::isNotEmpty)
     private val numbers: List<Int> = input.toList()[0].split(",").map(String::toInt)
-    private val bingoCards: List<BingoCard> = getBingoCards();
+    private val bingoCards: List<BingoCard> = getBingoCards()
 
     init {
         println("Day 4 output:")
@@ -13,21 +13,21 @@ class Day4 : Day {
     override fun part1() {
         numbers.forEach { number ->
             bingoCards.forEach { bingoCard ->
-                bingoCard.flagValue(number);
+                bingoCard.flagValue(number)
                 if (bingoCard.hasWon) {
                     println(number * bingoCard.sumOfUmarkedValues)
-                    return;
+                    return
                 }
             }
         }
     }
 
     override fun part2() {
-        val winningBoards = ArrayList<BingoCard>();
-        var finalNumber: Int;
+        val winningBoards = ArrayList<BingoCard>()
+        var finalNumber: Int
         numbers.forEach { number ->
             bingoCards.forEach { bingoCard ->
-                bingoCard.flagValue(number);
+                bingoCard.flagValue(number)
                 if (bingoCard.hasWon && !winningBoards.contains(bingoCard)) {
                     winningBoards.add(bingoCard)
                     finalNumber = number
@@ -45,25 +45,25 @@ class Day4 : Day {
     private data class BingoCard(var rows: MutableList<List<BingoNumber>>) {
         val sumOfUmarkedValues: Int
             get() {
-                var sum = 0;
+                var sum = 0
                 rows.forEach { it.forEach { bingoNumber -> if (!bingoNumber.flagged) sum += bingoNumber.number } }
-                return sum;
+                return sum
             }
 
         val hasWon: Boolean
             get() {
                 rows.forEachIndexed { index, list ->
-                    if (list.all(BingoNumber::flagged)) return true;
-                    if (rows.all { it[index].flagged }) return true;
+                    if (list.all(BingoNumber::flagged)) return true
+                    if (rows.all { it[index].flagged }) return true
                 }
-                return false;
+                return false
             }
 
         fun flagValue(value: Int) {
             rows.forEach { list ->
                 list.forEach {
                     if (it.number == value) {
-                        it.flagged = true;
+                        it.flagged = true
                     }
                 }
             }
@@ -75,14 +75,14 @@ class Day4 : Day {
         val bingoInput = input.subList(1, input.size)
         (1..bingoInput.size).forEach { i ->
             if (i % 5 == 0) {
-                val bingoCard = BingoCard(ArrayList());
+                val bingoCard = BingoCard(ArrayList())
                 val subList = bingoInput.subList(i - 5, i)
                 subList.forEach { s ->
                     val numbers = ArrayList<BingoNumber>()
                     s.split(Regex("\\s(?=([^\"]*\"[^\"]*\")*[^\"]*$)")).filter(String::isNotEmpty).forEach { split ->
                         numbers.add(BingoNumber(split.toInt(), false))
                     }
-                    bingoCard.rows.add(numbers);
+                    bingoCard.rows.add(numbers)
                 }
                 bingoCards.add(bingoCard)
             }
